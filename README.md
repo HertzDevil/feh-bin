@@ -2,10 +2,24 @@
 
 Conversion routines for Fire Emblem Heroes asset files.
 
-## Example
+## Installation
+
+```
+$ gem install feh-bin
+```
+
+## Command line usage
+
+To convert `a.bin` to `a.bin.lz`, and `b.bin.lz` to `b.bin`:
+
+```
+$ feh_bin_lz a.bin b.bin.lz
+```
+
+## Library example
 
 ```ruby
-require 'feh-bin'
+require 'feh/bin'
 
 Dir.glob('assets/Common/SRPGMap/*.bin.lz').each do |fname|
   IO.binwrite(fname.sub(/.lz$/, ''), Feh::Bin.decompress(IO.binread(fname)).pack('c*'))
