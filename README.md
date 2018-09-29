@@ -26,6 +26,16 @@ Dir.glob('assets/Common/SRPGMap/*.bin.lz').each do |fname|
 end
 ```
 
+## Changelog
+
+### V0.1.2
+
+- Fixed double encryption issue in `Feh::Bin.compress`
+
+### V0.1.0
+
+- Initial release
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
