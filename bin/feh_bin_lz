@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require 'feh/bin'
+
+DESC = "Fire Emblem Heroes assets converter
+Usage: #{File.basename(__FILE__)} <files>...
+
+Files ending in .bin.lz are converted to .bin; all other files are converted
+into .bin.lz."
+
+abort DESC if ARGV.empty? || ARGV.include?('-?') || ARGV.include?('--help')
+
+ARGV.each do |fname|
+  begin
+    buf = IO.binread(fname)
+    if fname.end_with?('.bin.lz')
+      outname = File.expand_path(
+        File.basename(fname).sub(/\.lz$/, ''), File.dirname(fname))
+      puts "Decompressing #{fname} -> #{outname}..."
+      res = Feh::Bin.decompress(buf)
+      raise RuntimeError, res.to_s if res.is_a?(Symbol)
+      IO.binwrite(outname, res.pack('c*'))
+    else
+      outname = File.expand_path(
+        File.basename(fname, '.*') + '.bin.lz', File.dirname(fname))
+      puts "Compressing #{fname} -> #{outname}..."
+      res = Feh::Bin.compress(buf)
+      raise RuntimeError, res.to_s if res.is_a?(Symbol)
+      IO.binwrite(outname, res.pack('c*'))
+    end
+  rescue RuntimeError => e
+    STDERR.puts "Error! (#{e})"
+  rescue Errno::ENOENT
+    STDERR.puts "#{fname} not found!"
+  end
+end
