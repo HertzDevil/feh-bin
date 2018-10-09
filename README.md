@@ -28,6 +28,10 @@ end
 
 ## Changelog
 
+### V0.1.3
+
+- Added read support for non-LZ11-compressed .bin.lz files
+
 ### V0.1.2
 
 - Fixed double encryption issue in `Feh::Bin.compress`

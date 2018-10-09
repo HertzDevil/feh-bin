@@ -41,13 +41,27 @@ module Feh
           4.times {|j| xorkey[j] ^= buf[i + j]}
         end
         buf
-#      elsif header.first == 0x04 && xorseed == buf.size
-#        xorkey = [0x8083 * xorseed].pack('<I').bytes
-#        (0...buf.size).step(4).each do |i|
-#          4.times {|j| buf[i + j] ^= xorkey[j]}
-#          4.times {|j| xorkey[j] ^= buf[i + j]}
-#        end
-#        buf
+      else
+        :invalid_archive
+      end
+    end
+
+    # Unpacks a Fire Emblem Heroes .bin.lz file.
+    # Used for files that are XOR-encrypted for FEH but not LZ11-compressed.
+    # @param buf [Array<Integer>, String] content of the .bin.lz file
+    # @return [Array<Integer>] content of the unpacked archive
+    # @return [Symbol] error code if the input is not a valid .bin.lz file
+    def self.read_bin_lz04(buf)
+      buf = buf.bytes if buf.is_a?(String)
+      header = buf.shift(4)
+      xorseed = header[1] | (header[2] << 8) | (header[3] << 16)
+      if header.first == 0x04 && xorseed == buf.size
+        xorkey = [0x8083 * xorseed].pack('<I').bytes
+        (0...buf.size).step(4).each do |i|
+          4.times {|j| buf[i + j] ^= xorkey[j]}
+          4.times {|j| xorkey[j] ^= buf[i + j]}
+        end
+        buf
       else
         :invalid_archive
       end
