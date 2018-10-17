@@ -16,6 +16,12 @@ To convert `a.bin` to `a.bin.lz`, and `b.bin.lz` to `b.bin`:
 $ feh_bin_lz a.bin b.bin.lz
 ```
 
+If it takes too long to compress a file, try adding `-s` anywhere:
+
+```
+$ feh_bin_lz -s very_large_file.bin
+```
+
 ## Library example
 
 ```ruby
@@ -27,6 +33,10 @@ end
 ```
 
 ## Changelog
+
+### V0.1.4
+
+- Added command line option `-s` to `feh_bin_lz` which skips LZ11 compression
 
 ### V0.1.3
 
