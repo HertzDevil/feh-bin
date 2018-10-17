@@ -3,12 +3,26 @@
 require 'feh/bin'
 
 DESC = "Fire Emblem Heroes assets converter
-Usage: #{File.basename(__FILE__)} <files>...
+Usage: #{File.basename(__FILE__)} [OPTION] <files>...
 
 Files ending in .bin.lz are converted to .bin; all other files are converted
-into .bin.lz."
+into .bin.lz.
+
+Options:
+  -s     Only encrypt files, do not compress using LZ11"
 
 abort DESC if ARGV.empty? || ARGV.include?('-?') || ARGV.include?('--help')
+
+$no_compress = false
+
+ARGV.select {|opt| opt.start_with? '-'}.each do |opt|
+  case opt
+  when '-s'
+    $no_compress = true
+  end
+end
+
+ARGV.reject! {|opt| opt.start_with? '-'}
 
 ARGV.each do |fname|
   begin
@@ -24,7 +38,7 @@ ARGV.each do |fname|
       outname = File.expand_path(
         File.basename(fname, '.*') + '.bin.lz', File.dirname(fname))
       puts "Compressing #{fname} -> #{outname}..."
-      res = Feh::Bin.compress(buf)
+      res = Feh::Bin.compress(buf, $no_compress)
       raise RuntimeError, res.to_s if res.is_a?(Symbol)
       IO.binwrite(outname, res.pack('c*'))
     end

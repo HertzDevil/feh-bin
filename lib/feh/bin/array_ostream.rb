@@ -5,7 +5,6 @@ require 'forwardable'
 module Feh module Bin
   # Single-pass output array stream that writes little-endian integers.
   class ArrayOStream
-
     # @return [Array<Integer>] the stream content
     def buf
       @buf.dup
