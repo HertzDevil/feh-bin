@@ -34,6 +34,11 @@ end
 
 ## Changelog
 
+### V0.2.0
+
+- Fix `<internal:pack>:8: warning: unknown pack directive '<' in '<l'` message
+- Allow use of Bundler 2.x
+
 ### V0.1.4
 
 - Added command line option `-s` to `feh_bin_lz` which skips LZ11 compression

@@ -40,7 +40,7 @@ module Feh
       header = buf.shift(4)
       xorseed = header[1] | (header[2] << 8) | (header[3] << 16)
       if (header.first & 0xFF) == 0x17 && (buf.first & 0xFF) == 0x11
-        xorkey = [0x8083 * xorseed].pack('<l').bytes
+        xorkey = [0x8083 * xorseed].pack('l<').bytes
         (4...buf.size).step(4).each do |i|
           4.times {|j| buf[i + j] ^= xorkey[j]}
           4.times {|j| xorkey[j] ^= buf[i + j]}
@@ -61,7 +61,7 @@ module Feh
       header = buf.shift(4)
       xorseed = header[1] | (header[2] << 8) | (header[3] << 16)
       if header.first == 0x04 && xorseed == buf.size
-        xorkey = [0x8083 * xorseed].pack('<l').bytes
+        xorkey = [0x8083 * xorseed].pack('l<').bytes
         (0...buf.size).step(4).each do |i|
           4.times {|j| buf[i + j] ^= xorkey[j]}
           4.times {|j| xorkey[j] ^= buf[i + j]}
@@ -80,8 +80,8 @@ module Feh
       bytes = bytes.bytes if bytes.is_a?(String)
       bytes += [0] * ((-bytes.size) % 4)
       xorseed = bytes.size if xorseed.nil?
-      header = [xorseed * 0x100 + 0x17].pack('<l').bytes
-      xorkey = [0x8083 * xorseed].pack('<l').bytes
+      header = [xorseed * 0x100 + 0x17].pack('l<').bytes
+      xorkey = [0x8083 * xorseed].pack('l<').bytes
       4.times {|j| bytes[4 + j] ^= xorkey[j]}
       (8...bytes.size).step(4).each do |i|
         4.times {|j| bytes[i + j] ^= bytes[i - 4 + j]}
@@ -98,8 +98,8 @@ module Feh
       bytes = bytes.bytes if bytes.is_a?(String)
       bytes += [0] * ((-bytes.size) % 4)
       xorseed = bytes.size if xorseed.nil?
-      header = [xorseed * 0x100 + 0x04].pack('<l').bytes
-      xorkey = [0x8083 * xorseed].pack('<l').bytes
+      header = [xorseed * 0x100 + 0x04].pack('l<').bytes
+      xorkey = [0x8083 * xorseed].pack('l<').bytes
       4.times {|j| bytes[j] ^= xorkey[j]}
       (4...bytes.size).step(4).each do |i|
         4.times {|j| bytes[i + j] ^= bytes[i - 4 + j]}

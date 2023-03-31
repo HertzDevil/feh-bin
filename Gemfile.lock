@@ -1,22 +1,22 @@
 PATH
   remote: .
   specs:
-    feh-bin (0.1.4)
+    feh-bin (0.2.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    minitest (5.11.3)
+    minitest (5.18.0)
     rake (10.5.0)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
-  bundler (~> 1.16)
+  bundler
   feh-bin!
-  minitest (~> 5.0)
-  rake (~> 10.0)
+  minitest
+  rake
 
 BUNDLED WITH
-   1.16.6
+   2.4.6
